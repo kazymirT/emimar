@@ -4,6 +4,7 @@ import { baseUrl } from "../../api/baseUrl";
 
 export const files = createApi({
   reducerPath: "files/api",
+  tagTypes: ['files', 'folder'],
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (build) => ({
     getProjectThree: build.query({
@@ -12,13 +13,15 @@ export const files = createApi({
         headers: headers(),
         params: { project_id },
       }),
+      providesTags: ['files', 'folder']
     }),
     getProjectFileEntry: build.query({
-      query: (project_id) => ({
+      query: ({ project_id, q }) => ({
         url: "/file-entry/get-project-file-entry",
         headers: headers(),
-        params: { project_id },
+        params: { project_id, q },
       }),
+      providesTags: ['files', 'folder']
     }),
     createFolder: build.query({
       query: (data) => ({
@@ -44,13 +47,14 @@ export const files = createApi({
         body: { folder_id },
       }),
     }),
-    moveFolder: build.query({
+    moveFolder: build.mutation({
       query: (data) => ({
         url: "/file-entry/move-folder",
         method: "POST",
         headers: headers(),
         body: data,
       }),
+      invalidatesTags: ['folder']
     }),
     uploadFile: build.query({
       query: (data) => ({
@@ -60,13 +64,14 @@ export const files = createApi({
         body: data,
       }),
     }),
-    moveFile: build.query({
+    moveFile: build.mutation({
       query: (data) => ({
         url: "/file-entry/move-file",
         method: "POST",
         headers: headers(),
         body: data,
       }),
+      invalidatesTags: ['files'],
     }),
     deleteFile: build.query({
       query: (file_id) => ({
@@ -75,6 +80,7 @@ export const files = createApi({
         headers: headers(),
         body: { file_id },
       }),
+      invalidatesTags: ['files'],
     }),
   }),
 });
@@ -85,8 +91,8 @@ export const {
   useLazyCreateFolderQuery,
   useLazyUpdateFolderQuery,
   useLazyDeleteFolderQuery,
-  useLazyMoveFolderQuery,
+  useMoveFolderMutation,
   useLazyUploadFileQuery,
-  useLazyMoveFileQuery,
+  useMoveFileMutation,
   useLazyDeleteFileQuery,
 } = files;

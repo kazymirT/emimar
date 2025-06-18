@@ -34,7 +34,7 @@ export function transformTree(data, parentPath = "") {
       const currentPath = parentPath ? `${parentPath}/${item.name}` : item.name;
 
       return {
-        title: item.name,
+        title: item.full_name,
         key: currentPath,
         id: item?.id,
         path: currentPath,
@@ -47,10 +47,32 @@ export function transformTree(data, parentPath = "") {
   );
 }
 
+function getAllKeys(treeData) {
+  let keys = [];
+
+  function traverse(nodes) {
+    for (const node of nodes) {
+      keys.push(node.key);
+      if (node.children && node.children.length) {
+        traverse(node.children);
+      }
+    }
+  }
+
+  traverse(treeData);
+  return keys;
+}
+
 export const FileThree = ({ nodes, selected, onSelect }) => {
   const [expandedKeys, setExpandedKeys] = useState([]);
 
   const tree = transformTree(nodes);
+
+  useEffect(() => {
+    if (tree.length) {
+      setExpandedKeys(getAllKeys(tree));
+    }
+  }, [nodes]);
 
   useEffect(() => {
     if (selected && nodes?.response?.tree) {

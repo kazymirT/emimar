@@ -5,13 +5,21 @@ import { useLazyDeleteGroupQuery } from "../../../../store/groups/groups.api";
 import { ConfirmDeleteModal } from "../../../../components/ConfirmModal";
 import { Loading } from "../../../../components/Loading";
 import { EmptyMessage } from "../../../../components/EmptyMessage";
+import { useSortedData } from "../../../../hooks/useSortedData";
 
-export const Table = ({ data, onRefetch, onEdit, isLoading }) => {
+export const Table = ({ data, onRefetch, onEdit, isLoading, search }) => {
   const [deleting, setDeleting] = useState(null);
   const [deleteGroup] = useLazyDeleteGroupQuery();
   const [selected, setSelected] = useState([]);
   const [deletingItems, setDeletingItems] = useState([]);
 
+  const {
+    sortedData,
+    sortBy,
+    sortOrder,
+    handleSort
+  } = useSortedData(data?.response || [], search); 
+ 
   const handleCloseDeleting = () => {
     setDeleting(null);
     setDeletingItems([]);
@@ -62,10 +70,13 @@ export const Table = ({ data, onRefetch, onEdit, isLoading }) => {
                     )
                   }
                   onDelete={() => setDeletingItems(selected)}
+                  onSort={handleSort}
+                  sortBy={sortBy}
+                  sortOrder={sortOrder}
                 />
               </thead>
               <tbody>
-                {data?.response?.map(({ id, title, create_at, user }) => (
+                {sortedData.map(({ id, title, create_at, user }) => (
                   <Row
                     key={id}
                     title={title}

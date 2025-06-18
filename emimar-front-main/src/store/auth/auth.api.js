@@ -25,6 +25,14 @@ export const auth = createApi({
         headers: headers(),
       }),
     }),
+    resetPassword: build.query({
+      query: ({email, password, password_confirmation}) => ({
+        url: "/auth/reset-password",
+        method: "POST",
+        headers: headers(),
+        params: { email, password, password_confirmation }        
+      }),
+    }),
     createUser: build.query({
       query: (data) => ({
         url: "/user/create-user",
@@ -60,6 +68,7 @@ export const auth = createApi({
 });
 
 export const {
+  useLazyResetPasswordQuery,
   useLazyLoginQuery,
   useLazyLogoutQuery,
   useLazyGetUserQuery,

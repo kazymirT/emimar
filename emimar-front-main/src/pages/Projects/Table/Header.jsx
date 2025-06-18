@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useClickOutside } from "../../../hooks";
 
-export const Header = ({ isSelectedAll, onSelectAll, onDelete }) => {
+export const Header = ({ isSelectedAll, onSelectAll, onDelete, onSort, sortBy, sortOrder }) => {
   const [dropdown, setDrodown] = useState(false);
   const dropdownRef = useRef();
 
@@ -26,17 +26,21 @@ export const Header = ({ isSelectedAll, onSelectAll, onDelete }) => {
           <label className="custom-control-label" htmlFor="pid-all" />
         </div>
       </th>
-      <th className="nk-tb-col">
+      <th className="nk-tb-col" onClick={() => onSort('title')}>
         <span className="sub-text">Name</span>
+        {sortBy === "title" ? (sortOrder === "asc" ? " 🔼" : " 🔽") : ""}
       </th>
-      <th className="nk-tb-col">
+      <th className="nk-tb-col" onClick={() => onSort('create_at')}>
         <span className="sub-text">Date create</span>
+        {sortBy === "create_at" ? (sortOrder === "asc" ? " 🔼" : " 🔽") : ""}
       </th>
-      <th className="nk-tb-col">
+      <th className="nk-tb-col" onClick={() => onSort('user')}>
         <span className="sub-text">Users</span>
+        {sortBy === "user" ? (sortOrder === "asc" ? " 🔼" : " 🔽") : ""}
       </th>
-      <th className="nk-tb-col">
+      <th className="nk-tb-col" onClick={() => onSort('groups')}>
         <span className="sub-text">Groups</span>
+        {sortBy === "groups" ? (sortOrder === "asc" ? " 🔼" : " 🔽") : ""}
       </th>
       <th className="nk-tb-col nk-tb-col-tools text-end">
         <div ref={dropdownRef} className={`dropdown ${dropdown ? "show" : ""}`}>

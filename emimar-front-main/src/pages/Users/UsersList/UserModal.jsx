@@ -11,6 +11,7 @@ export const UserModal = ({ onClose, onRefetchUser, editUser }) => {
     display_name: "",
     email: "",
     birth_day: "",
+    phone: "",
   });
 
   const [createUser] = useLazyCreateUserQuery();
@@ -23,6 +24,8 @@ export const UserModal = ({ onClose, onRefetchUser, editUser }) => {
     // Якщо це редагування, підставляємо значення
     if (editUser) {
       setNewUser({
+        phone: editUser.phone,
+        user_id: editUser.user_id,
         full_name: editUser.full_name || "",
         display_name: editUser.display_name || "",
         email: editUser.email || "",
@@ -110,7 +113,8 @@ export const UserModal = ({ onClose, onRefetchUser, editUser }) => {
               </div>
             </div>
 
-            <div className="form-group">
+            <div className="row">
+              <div className="form-group col-md-6">
               <label className="form-label">Email</label>
               <input
                 type="email"
@@ -121,6 +125,18 @@ export const UserModal = ({ onClose, onRefetchUser, editUser }) => {
                 }
               />
             </div>
+            <div className="form-group col-md-6">
+              <label className="form-label">Phone</label>
+              <input
+                type="tel"
+                className="form-control"
+                value={newUser.phone}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, phone: e.target.value })
+                }
+              />
+            </div>
+                </div>
 
             <div className="form-group">
               <label className="form-label">Date of Birth</label>

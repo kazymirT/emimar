@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Header } from "./Header";
 import { Row } from "./Row";
-import { useLazyDeleteGroupQuery } from "../../../store/groups/groups.api";
 import { ConfirmDeleteModal } from "../../../components/ConfirmModal";
 import { useLazyDeleteProjectQuery } from "../../../store/projects/projects.api";
 import { Loading } from "../../../components/Loading";
 import { EmptyMessage } from "../../../components/EmptyMessage";
+import { useSortedData } from "../../../hooks/useSortedData";
 
-export const Table = ({ data, search, onEdit, onRefetchData, isLoading }) => {
+export const Table = ({ data, onEdit, onRefetchData, isLoading }) => {
   const [deleting, setDeleting] = useState(null);
   const [deleteProject] = useLazyDeleteProjectQuery();
   const [selected, setSelected] = useState([]);
@@ -18,6 +18,13 @@ export const Table = ({ data, search, onEdit, onRefetchData, isLoading }) => {
     setDeletingItems([]);
     setSelected([]);
   };
+
+    const {
+      sortedData,
+      sortBy,
+      sortOrder,
+      handleSort
+    } = useSortedData(data?.response?.projects || []); 
 
   const handleDelete = () => {
     if (deletingItems?.length > 0) {
@@ -70,16 +77,13 @@ export const Table = ({ data, search, onEdit, onRefetchData, isLoading }) => {
                     )
                   }
                   onDelete={() => setDeletingItems(selected)}
+                  onSort={handleSort}
+                  sortBy={sortBy}
+                  sortOrder={sortOrder}
                 />
               </thead>
               <tbody>
-                {data?.response?.projects
-                  ?.filter((u) =>
-                    search?.length > 0
-                      ? u.title.toLowerCase().includes(search.toLowerCase())
-                      : true
-                  )
-                  ?.map(
+                {sortedData.map(
                     ({ id, title, create_at, user, groups, rules_type }) => (
                       <Row
                         key={id}

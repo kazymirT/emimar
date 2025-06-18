@@ -6,12 +6,15 @@ import { Row } from "./Row";
 import { useLazyDeleteUserQuery } from "../../../../store/auth/auth.api";
 import { Loading } from "../../../../components/Loading";
 import { EmptyMessage } from "../../../../components/EmptyMessage";
+import { useSortedData } from "../../../../hooks/useSortedData";
 
 export const Table = ({
   data,
   onChangePage,
+  onChangePassword,
   onRefetchUser,
   onEdit,
+  search,
   isLoading,
 }) => {
   const [deletingUser, setDeletingUser] = useState(null);
@@ -24,6 +27,13 @@ export const Table = ({
     setDeletingItems([]);
     setSelected([]);
   };
+
+  const {
+    sortedData,
+    sortBy,
+    sortOrder,
+    handleSort
+  } = useSortedData(data?.response?.users?.data || [], search); 
 
   const handleDelete = () => {
     if (deletingItems?.length > 0) {
@@ -40,7 +50,7 @@ export const Table = ({
     }
     handleCloseDeleting();
   };
-
+  console.log(data?.response?.users?.data)
   return (
     <div className="nk-block">
       {(deletingUser || deletingItems?.length > 0) && (
@@ -71,10 +81,13 @@ export const Table = ({
                     )
                   }
                   onDelete={() => setDeletingItems(selected)}
+                  onSort={handleSort}
+                  sortBy={sortBy}
+                  sortOrder={sortOrder}
                 />
               </thead>
               <tbody>
-                {data?.response?.users?.data?.map(
+                {sortedData.map(
                   ({ display_name, email, created_at, id, ...rest }) => (
                     <Row
                       key={id}
@@ -91,6 +104,7 @@ export const Table = ({
                           ...rest,
                         })
                       }
+                      onChangePassword={() => onChangePassword({email})}
                       id={id}
                       selected={selected.includes(id)}
                       onSelect={() =>

@@ -9,6 +9,7 @@ export const GroupList = () => {
   const { data, refetch, isLoading } = useGetGroupsQuery({ page: currentPage });
   const [showModal, setShowModal] = useState(false);
   const [editGroup, setEditGroup] = useState(null);
+  const [search, onSearch] = useState("");
 
   const handleChangePage = (page) => setCurrentPage(page);
   const handleEdit = (group) => {
@@ -28,9 +29,14 @@ export const GroupList = () => {
           editData={editGroup}
         />
       )}
-      <Header onCreateGroup={() => setShowModal(true)} />
+      <Header 
+        onCreateGroup={() => setShowModal(true)}
+        search={search}
+        handleSearchChange={(e) => onSearch(e.target.value)}
+      />
       <Table
         data={data}
+        search={search}
         onRefetch={refetch}
         onEdit={handleEdit}
         isLoading={isLoading}
