@@ -16,10 +16,10 @@ export const files = createApi({
       providesTags: ['files', 'folder']
     }),
     getProjectFileEntry: build.query({
-      query: (project_id) => ({
+      query: ({ project_id, q }) => ({
         url: "/file-entry/get-project-file-entry",
         headers: headers(),
-        params: { project_id },
+        params: { project_id, q },
       }),
       providesTags: ['files', 'folder']
     }),

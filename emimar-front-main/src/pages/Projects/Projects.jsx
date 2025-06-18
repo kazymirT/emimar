@@ -4,9 +4,10 @@ import { Header } from "./Header/Header";
 import { Table } from "./Table/Table";
 import { CreateProject } from "./CreateProject";
 
+
 export const Projects = () => {
-  const { data, refetch, isLoading } = useGetProjectsQuery();
   const [search, setSearch] = useState("");
+  const { data, refetch, isLoading } = useGetProjectsQuery({ q: search });
   const [modal, setModal] = useState(false);
   const [editData, setEditData] = useState(null);
 
@@ -43,16 +44,11 @@ export const Projects = () => {
                     onSearch={handleSearch}
                     onCreate={() => setModal(true)}
                     total={
-                      data?.response?.projects?.filter((u) =>
-                        search?.length > 0
-                          ? u.title.toLowerCase().includes(search.toLowerCase())
-                          : true
-                      )?.length
+                      data?.response?.count
                     }
                   />
                   <Table
                     data={data}
-                    search={search}
                     onEdit={handleEdit}
                     onRefetchData={refetch}
                     isLoading={isLoading}

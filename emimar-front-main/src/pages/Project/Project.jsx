@@ -15,9 +15,10 @@ export const ItemTypes = {
 
 export const Project = () => {
   const { selectedProject } = useAppSelect((state) => state.auth);
+  const [search, onSearch] = useState("");
   const { data: threeData, refetch: refetchThree } =
     useGetProjectThreeQuery(selectedProject);
-  const { data, refetch } = useGetProjectFileEntryQuery(selectedProject);
+  const { data, refetch } = useGetProjectFileEntryQuery({ q: search, project_id: selectedProject });
   const [selected, setSelected] = useState();
 
   const handleSelectFolder = (id) => {
@@ -45,6 +46,8 @@ export const Project = () => {
             <Files
               data={data}
               selected={selected}
+              onSearch={onSearch}
+              search={search}
               onRefetchData={handleRefetchData}
               onSelectFolder={(id) => setSelected(id)}
             />
