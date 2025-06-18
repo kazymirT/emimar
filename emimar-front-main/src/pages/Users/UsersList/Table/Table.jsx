@@ -13,6 +13,7 @@ export const Table = ({
   onChangePassword,
   onRefetchUser,
   onEdit,
+  search,
   isLoading,
 }) => {
   const [deletingUser, setDeletingUser] = useState(null);
@@ -75,7 +76,12 @@ export const Table = ({
                 />
               </thead>
               <tbody>
-                {data?.response?.users?.data?.map(
+                {data?.response?.users?.data?.filter((u) =>
+                    search?.length > 0
+                      ? u.display_name.toLowerCase().includes(search.toLowerCase())
+                      : true
+                  )
+                  ?.map(
                   ({ display_name, email, created_at, id, ...rest }) => (
                     <Row
                       key={id}

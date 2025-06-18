@@ -11,9 +11,9 @@ export const UsersList = () => {
   const [showModal, setShowModal] = useState(false);
   const [editUser, setEditUser] = useState(null);
   const [changePassword, setChangePassword] = useState(null);
+  const [search, onSearch] = useState("");
 
   const handleChangePage = (page) => setCurrentPage(page);
-
   const handleEditUser = (user) => {
     setShowModal(true);
     setEditUser(user);
@@ -43,9 +43,14 @@ export const UsersList = () => {
           editUser={editUser}
         />
       )}
-      <Header onCreateUser={() => setShowModal(true)} />
+      <Header 
+        onCreateUser={() => setShowModal(true)}
+        search={search}
+        handleSearchChange={(e) => onSearch(e.target.value)}
+      />
       <Table
         data={data}
+        search={search}
         onChangePage={handleChangePage}
         onRefetchUser={refetch}
         onEdit={handleEditUser}
