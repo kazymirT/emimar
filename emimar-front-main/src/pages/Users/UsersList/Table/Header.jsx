@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useClickOutside } from "../../../../hooks";
 
-export const Header = ({ isSelectedAll, onSelectAll, onDelete }) => {
+export const Header = ({ isSelectedAll, onSelectAll, onDelete, onSort, sortBy, sortOrder }) => {
   const [dropdown, setDrodown] = useState(false);
   const dropdownRef = useRef();
 
@@ -26,14 +26,17 @@ export const Header = ({ isSelectedAll, onSelectAll, onDelete }) => {
           <label className="custom-control-label" htmlFor="pid-all" />
         </div>
       </th>
-      <th className="nk-tb-col">
+      <th className="nk-tb-col" onClick={() => onSort('display_name')}>
         <span className="sub-text">Name</span>
+        {sortBy === "display_name" ? (sortOrder === "asc" ? " 🔼" : " 🔽") : ""}
       </th>
-      <th className="nk-tb-col">
+      <th className="nk-tb-col" onClick={() => onSort("created_at")}>
         <span className="sub-text">Date create</span>
+        {sortBy === "created_at" ? (sortOrder === "asc" ? " 🔼" : " 🔽") : ""}
       </th>
-      <th className="nk-tb-col">
+      <th className="nk-tb-col" onClick={() => onSort('email')}>
         <span className="sub-text">Email</span>
+        {sortBy === "email" ? (sortOrder === "asc" ? " 🔼" : " 🔽") : ""}
       </th>
       <th className="nk-tb-col nk-tb-col-tools text-end">
         <div ref={dropdownRef} className={`dropdown ${dropdown ? "show" : ""}`}>
@@ -71,3 +74,4 @@ export const Header = ({ isSelectedAll, onSelectAll, onDelete }) => {
     </tr>
   );
 };
+

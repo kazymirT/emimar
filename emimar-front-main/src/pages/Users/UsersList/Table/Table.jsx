@@ -6,6 +6,7 @@ import { Row } from "./Row";
 import { useLazyDeleteUserQuery } from "../../../../store/auth/auth.api";
 import { Loading } from "../../../../components/Loading";
 import { EmptyMessage } from "../../../../components/EmptyMessage";
+import { useSortedData } from "../../../../hooks/useSortedData";
 
 export const Table = ({
   data,
@@ -27,6 +28,13 @@ export const Table = ({
     setSelected([]);
   };
 
+  const {
+    sortedData,
+    sortBy,
+    sortOrder,
+    handleSort
+  } = useSortedData(data?.response?.users?.data || [], search); 
+
   const handleDelete = () => {
     if (deletingItems?.length > 0) {
       Promise.all(deletingItems?.map((id) => deleteUser(id))).finally(() => {
@@ -42,7 +50,7 @@ export const Table = ({
     }
     handleCloseDeleting();
   };
-
+  console.log(data?.response?.users?.data)
   return (
     <div className="nk-block">
       {(deletingUser || deletingItems?.length > 0) && (
@@ -73,15 +81,13 @@ export const Table = ({
                     )
                   }
                   onDelete={() => setDeletingItems(selected)}
+                  onSort={handleSort}
+                  sortBy={sortBy}
+                  sortOrder={sortOrder}
                 />
               </thead>
               <tbody>
-                {data?.response?.users?.data?.filter((u) =>
-                    search?.length > 0
-                      ? u.display_name.toLowerCase().includes(search.toLowerCase())
-                      : true
-                  )
-                  ?.map(
+                {sortedData.map(
                   ({ display_name, email, created_at, id, ...rest }) => (
                     <Row
                       key={id}
