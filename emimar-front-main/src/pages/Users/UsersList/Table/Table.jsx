@@ -10,6 +10,7 @@ import { EmptyMessage } from "../../../../components/EmptyMessage";
 export const Table = ({
   data,
   onChangePage,
+  onChangePassword,
   onRefetchUser,
   onEdit,
   isLoading,
@@ -91,6 +92,7 @@ export const Table = ({
                           ...rest,
                         })
                       }
+                      onChangePassword={() => onChangePassword({email})}
                       id={id}
                       selected={selected.includes(id)}
                       onSelect={() =>

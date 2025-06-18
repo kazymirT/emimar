@@ -7,6 +7,7 @@ export const Row = ({
   createdAt,
   onDelete,
   onEdit,
+  onChangePassword,
   id,
   selected,
   onSelect,
@@ -91,6 +92,18 @@ export const Row = ({
                     >
                       <em className="icon ni ni-edit" />
                       <span>Edit</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onChangePassword();
+                      }}
+                    >
+                      <em className="icon ni ni-edit" />
+                      <span>Change password</span>
                     </a>
                   </li>
                 </ul>
