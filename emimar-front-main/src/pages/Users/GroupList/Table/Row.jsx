@@ -13,13 +13,12 @@ export const Row = ({
   onSelect,
 }) => {
   const [dropdown, setDrodown] = useState(false);
-  const navigate = useNavigate();
   const dropdownRef = useRef();
 
   useClickOutside(dropdownRef, () => setDrodown(false));
 
   return (
-    <tr className="nk-tb-item" onClick={() => navigate("/project")}>
+    <tr className="nk-tb-item" onClick={onEdit}>
       <td className="nk-tb-col nk-tb-col-check">
         <div
           className="custom-control custom-control-sm custom-checkbox notext"
