@@ -32,7 +32,7 @@ export const ChangePasswordModal = ({ onClose, onRefetchUser, user }) => {
       return false;
     }
 
-    setValidationError(""); // усе ок
+    setValidationError("");
     return true;
   };
 

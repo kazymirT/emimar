@@ -1,6 +1,7 @@
 import { EmptyMessage } from "../../../../components/EmptyMessage";
 import { FileCard } from "../../../../components/FileCard/FileCard";
-
+import { FolderBox } from "../../../../components/FileDnd/FolderBox";
+import { FolderDraggable } from "../../../../components/FileDnd/FolderDraggable";
 export const FoldersList = ({
   data,
   selected,
@@ -31,16 +32,20 @@ export const FoldersList = ({
                 : parent_id === null
             )
             ?.map(({ id, name, size, created_at }) => (
-              <FileCard
-                key={id}
-                name={name}
-                type="folder"
-                size={size}
-                date={created_at}
-                onEdit={() => onEdit({ id, name })}
-                onDelete={() => onDelete({ id, name, type: "folder" })}
-                onSelect={() => onSelectFolder(id)}
-              />
+              <FolderBox key={id} id={id}>
+                <FolderDraggable id={id}>
+                <FileCard
+                  isMove
+                  name={name}
+                  type="folder"
+                  size={size}
+                  date={created_at}
+                  onEdit={() => onEdit({ id, name })}
+                  onDelete={() => onDelete({ id, name, type: "folder" })}
+                  onSelect={() => onSelectFolder(id)}
+                  />
+                  </FolderDraggable>
+               </FolderBox>
             ))
         )}
       </div>

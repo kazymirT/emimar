@@ -1,6 +1,5 @@
 import { formatFileSize, getFileIcon } from "../../helpers";
 import { Actions } from "./Actions";
-import { TYPES } from "./types";
 
 export const FileCard = ({
   type,
@@ -10,9 +9,10 @@ export const FileCard = ({
   onEdit,
   onDelete,
   onSelect,
+  isMove = false
 }) => (
   <div
-    className={`nk-file-item nk-file ${onSelect && "cursor-pointer"}`}
+    className={`${!isMove && "nk-file-item nk-file"} ${onSelect && "cursor-pointer"}`}
     onClick={(e) => {
       e.preventDefault();
       onSelect && onSelect();
